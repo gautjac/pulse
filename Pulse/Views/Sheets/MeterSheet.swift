@@ -25,7 +25,9 @@ struct MeterSheet: View {
                 beatUnitSection
                 sequenceSection(theme)
             }
-            .toolbar { ToolbarItem(placement: .topBarLeading) { EditButton() } }
+            #if os(iOS)
+            .toolbar { ToolbarItem(placement: .leadingBar) { EditButton() } }
+            #endif
             .onAppear { groupingText = meter.groupingString }
             .onChange(of: meter.groupingString) { _, new in if !groupingFocused { groupingText = new } }
         }
@@ -72,7 +74,7 @@ struct MeterSheet: View {
                     Spacer()
                     TextField("e.g. 3+3+2", text: $groupingText)
                         .multilineTextAlignment(.trailing)
-                        .keyboardType(.numbersAndPunctuation)
+                        .groupingKeyboard()
                         .focused($groupingFocused)
                         .submitLabel(.done)
                         .foregroundStyle(groupingInvalid ? .red : .primary)

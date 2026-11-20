@@ -31,6 +31,7 @@ final class AudioOutput: ClickOutput {
 
     init() {
         let nc = NotificationCenter.default
+        #if os(iOS)
         observers.append(nc.addObserver(forName: AVAudioSession.interruptionNotification, object: nil, queue: .main) { [weak self] note in
             guard let raw = note.userInfo?[AVAudioSessionInterruptionTypeKey] as? UInt,
                   AVAudioSession.InterruptionType(rawValue: raw) == .began else { return }
@@ -41,12 +42,20 @@ final class AudioOutput: ClickOutput {
                   AVAudioSession.RouteChangeReason(rawValue: raw) == .oldDeviceUnavailable else { return }
             MainActor.assumeIsolated { self?.onInterruption?() }   // headphones pulled: stop, like any player
         })
+        #endif
         observers.append(nc.addObserver(forName: .AVAudioEngineConfigurationChange, object: nil, queue: .main) { [weak self] _ in
             MainActor.assumeIsolated { self?.rebuildAfterConfigurationChange() }
         })
     }
 
-    var outputLatency: Double { AVAudioSession.sharedInstance().outputLatency }
+    var outputLatency: Double {
+        #if os(iOS)
+        AVAudioSession.sharedInstance().outputLatency
+        #else
+        // The device's own latency plus the engine's buffering, as CoreAudio reports it.
+        engine.outputNode.presentationLatency
+        #endif
+    }
 
     // MARK: ClickOutput
 
@@ -88,11 +97,17 @@ final class AudioOutput: ClickOutput {
     // MARK: Engine
 
     private func prepare() throws {
+        #if os(iOS)
         let session = AVAudioSession.sharedInstance()
         try session.setCategory(.playback, mode: .default, options: mixWithOthers ? [.mixWithOthers] : [])
         try? session.setPreferredIOBufferDuration(0.005)
         try session.setActive(true)
         let rate = session.sampleRate > 0 ? session.sampleRate : 48_000
+        #else
+        // macOS has no audio session: the output device's own rate is the engine's rate.
+        let deviceRate = engine.outputNode.outputFormat(forBus: 0).sampleRate
+        let rate = deviceRate > 0 ? deviceRate : 48_000
+        #endif
         if core == nil || core?.sampleRate != rate { buildGraph(sampleRate: rate) }
         if !engine.isRunning {
             engine.prepare()
@@ -140,7 +155,9 @@ final class AudioOutput: ClickOutput {
         let work = DispatchWorkItem { [weak self] in
             guard let self, !self.playing else { return }
             self.engine.pause()
+            #if os(iOS)
             try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
+            #endif
         }
         idleWork = work
         DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: work)

@@ -28,7 +28,7 @@ struct BeatGridView: View {
                             muted: live && phase.muted,
                             theme: theme)
                         .onTapGesture {
-                            Haptics.selection.selectionChanged()
+                            Haptics.selection()
                             m.cycleAccent(bar: barIndex, pulse: pulse)
                         }
                         .contextMenu {

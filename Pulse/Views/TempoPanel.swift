@@ -153,7 +153,7 @@ struct TempoRuler: View {
         .gesture(
             DragGesture(minimumDistance: 0)
                 .onChanged { g in
-                    if dragStart == nil { dragStart = bpm; lastWhole = Int(bpm.rounded()); Haptics.selection.prepare() }
+                    if dragStart == nil { dragStart = bpm; lastWhole = Int(bpm.rounded()); Haptics.prepareSelection() }
                     let raw = (dragStart ?? bpm) - Double(g.translation.width / points)
                     let clamped = min(max(raw, 20), 400)
                     shown = clamped
@@ -161,7 +161,7 @@ struct TempoRuler: View {
                     if whole != lastWhole {
                         lastWhole = whole
                         onChange(Double(whole))
-                        if haptics { Haptics.selection.selectionChanged() }
+                        if haptics { Haptics.selection() }
                     }
                 }
                 .onEnded { _ in dragStart = nil; shown = nil }

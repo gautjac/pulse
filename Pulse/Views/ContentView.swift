@@ -26,6 +26,15 @@ struct ContentView: View {
             }
         }
         .foregroundStyle(theme.inkColor)
+        #if os(macOS)
+        .frame(minWidth: 520, minHeight: 620)
+        #endif
+        .focusable()
+        .focusEffectDisabled()
+        .onKeyPress(keys: [.space, .upArrow, .downArrow, .rightArrow, .leftArrow, KeyEquivalent("t")], phases: [.down, .repeat]) { press in
+            handleKey(press)
+        }
+        .focusedSceneValue(\.openSheet, { sheet = $0 })
         .sheet(item: $sheet) { kind in
             Group {
                 switch kind {
@@ -37,11 +46,10 @@ struct ContentView: View {
                 case .settings: SettingsSheet()
                 }
             }
-            .presentationDetents(kind == .settings || kind == .presets ? [.large] : [.medium, .large])
-            .presentationDragIndicator(.visible)
+            .sheetSizing(large: kind == .settings || kind == .presets)
         }
         .alert("Set tempo", isPresented: $showTempoEntry) {
-            TextField("BPM", text: $tempoText).keyboardType(.numberPad)
+            TextField("BPM", text: $tempoText).numberPadKeyboard()
             Button("Set") { if let v = Double(tempoText) { m.setBPM(v) } }
             Button("Cancel", role: .cancel) {}
         } message: {
@@ -52,6 +60,23 @@ struct ContentView: View {
         } message: {
             Text(m.lastError ?? "")
         }
+    }
+
+    /// Hardware keyboard (Mac, iPad): space starts and stops, arrows change the tempo (shift for ±10), T taps.
+    private func handleKey(_ press: KeyPress) -> KeyPress.Result {
+        let step: Double = press.modifiers.contains(.shift) ? 10 : 1
+        switch press.key {
+        case .space:
+            guard press.phase == .down else { return .handled }
+            m.toggle()
+        case .upArrow, .rightArrow: m.nudge(step)
+        case .downArrow, .leftArrow: m.nudge(-step)
+        default:
+            guard press.characters.lowercased() == "t" else { return .ignored }
+            guard press.phase == .down else { return .handled }
+            m.tapTempo()
+        }
+        return .handled
     }
 
     // MARK: Layouts

@@ -1,6 +1,6 @@
 # Pulse
 
-A feature-rich metronome for iPhone and iPad, built for musicians who play in more than 4/4.
+A feature-rich metronome for iPhone, iPad and Mac, built for musicians who play in more than 4/4.
 
 Native SwiftUI, no audio files: every click is synthesized in code by a sample-accurate engine.
 
@@ -74,13 +74,22 @@ project.yml           xcodegen spec (run `xcodegen generate`)
 
 The UI doesn't run its own clock. The engine publishes the last 32 pulses with their sample positions and the host time of each buffer; `PlaybackPhase.compute` turns that into the position being heard right now, so the visuals stay locked to the sound at any buffer size. Output latency (e.g. Bluetooth) is added automatically; the Settings slider fine-tunes it.
 
+## One app, three platforms
+
+One multiplatform target (`supportedDestinations: [iOS, macOS]`) with a single bundle ID, so the App Store treats it as a universal purchase. The engine, model, views and intents are shared; everything that differs lives in `Pulse/Model/Platform.swift` (haptics, keep-awake, display link, keyboard and sheet modifiers) and a few `#if os(iOS)` blocks in `AudioOutput` (AVAudioSession on iOS, the output device's own rate and latency on the Mac).
+
+- **Mac:** resizable window with the wide layout, menu-bar commands (Metronome and Visual menus), media keys through Now Playing, App Nap and display sleep held off while playing, App Sandbox and hardened runtime on. Siri and Shortcuts use the same intents.
+- **Keyboard (Mac and iPad):** Space start/stop, ↑/→ and ↓/← change tempo by 1 (Shift for 10), T taps tempo. Menu shortcuts: ⌘↩ start/stop, ⌘T tap, ⌘↑/⌘↓ faster/slower, ⌘] / ⌘[ double/half, ⌘1–4 visual modes, ⌥⌘M/D/S/P/L open Meter, Subdivision, Sounds, Practice, Presets, ⌘, Settings.
+- Haptics are iPhone-only and hidden on the Mac, as are the "play along with other audio" and audio-session settings.
+
 ## Build and test
 
 ```bash
-cd PulseKit && swift test            # 67 engine tests, incl. 10 minutes with no drift
+cd PulseKit && swift test            # 68 engine tests, incl. 10 minutes with no drift
 xcodegen generate
 xcodebuild -project Pulse.xcodeproj -scheme Pulse \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro' test   # 28 app + intent tests
+xcodebuild -project Pulse.xcodeproj -scheme Pulse -destination 'platform=macOS' test   # same 28 on the Mac
 ```
 
 For screenshots and manual checks, Debug builds accept launch arguments:
@@ -88,5 +97,5 @@ For screenshots and manual checks, Debug builds accept launch arguments:
 
 ## Notes
 
-- Deployment target iOS 26. Signing uses team `9WZ66DZ69J`; build for a device from Xcode as usual.
+- Deployment target iOS 26 / macOS 26. Signing uses team `9WZ66DZ69J`; build for a device from Xcode as usual.
 - Siri skills (the iOS 27.3 beta `ToolIntent` / Skills bundle work described in `_SIRI_AI_2026-11.md`) is not wired up yet; the intents here work with today's Siri and Shortcuts, and are the right base for it.

@@ -1,13 +1,5 @@
 import SwiftUI
-import UIKit
 import PulseKit
-
-/// Shared haptic generators so rapid interaction does not allocate.
-@MainActor
-enum Haptics {
-    static let selection = UISelectionFeedbackGenerator()
-    static let light = UIImpactFeedbackGenerator(style: .light)
-}
 
 struct Chip: View {
     let title: String
@@ -48,7 +40,7 @@ struct SheetScaffold<Content: View>: View {
         NavigationStack {
             content
                 .navigationTitle(title)
-                .navigationBarTitleDisplayMode(.inline)
+                .inlineNavigationTitle()
                 .toolbar {
                     ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } }
                 }

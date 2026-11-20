@@ -1,5 +1,4 @@
 import SwiftUI
-import UIKit
 import PulseKit
 
 /// The app's single source of truth: current settings, transport, presets and preferences.
@@ -33,9 +32,7 @@ final class Metronome {
     @ObservationIgnored private var tapper = TapTempo()
     @ObservationIgnored private var displayLink: DisplayLinkDriver?
     @ObservationIgnored private var lastHapticPulse = -1
-    @ObservationIgnored private let impacts: [UIImpactFeedbackGenerator] = [
-        UIImpactFeedbackGenerator(style: .light), UIImpactFeedbackGenerator(style: .medium), UIImpactFeedbackGenerator(style: .rigid),
-    ]
+    @ObservationIgnored private let awake = StayAwake()
     @ObservationIgnored private var integration: SystemIntegration?
 
     nonisolated static let settingsKey = "pulse.settings.v1"
@@ -112,7 +109,7 @@ final class Metronome {
     func toggle() { isPlaying ? stop() : start() }
 
     private func updateIdleTimer() {
-        UIApplication.shared.isIdleTimerDisabled = isPlaying && prefs.keepAwake
+        awake.update(playing: isPlaying, keepDisplayOn: prefs.keepAwake)
     }
 
     // MARK: Editing
@@ -154,7 +151,7 @@ final class Metronome {
 
     func tapTempo() {
         tapCount += 1
-        if prefs.haptics { impacts[1].impactOccurred() }
+        if prefs.haptics { Haptics.impact(.medium) }
         if let bpm = tapper.tap(at: ProcessInfo.processInfo.systemUptime) { setBPM(bpm.rounded()) }
     }
 
@@ -276,9 +273,9 @@ final class Metronome {
             lastHapticPulse = p.pulseIndex
             if prefs.haptics, !p.muted {
                 switch p.accent {
-                case .strong: impacts[2].impactOccurred(intensity: 0.9)
-                case .medium: impacts[1].impactOccurred(intensity: 0.6)
-                case .soft: impacts[0].impactOccurred(intensity: 0.4)
+                case .strong: Haptics.impact(.strong, intensity: 0.9)
+                case .medium: Haptics.impact(.medium, intensity: 0.6)
+                case .soft: Haptics.impact(.light, intensity: 0.4)
                 case .off: break
                 }
             }
@@ -295,27 +292,3 @@ final class Metronome {
     }
 }
 
-// MARK: - Display link
-
-/// Calls `tick` once per screen refresh.
-@MainActor
-final class DisplayLinkDriver: NSObject {
-    private var link: CADisplayLink?
-    private let tick: () -> Void
-
-    init(tick: @escaping () -> Void) {
-        self.tick = tick
-        super.init()
-        let l = CADisplayLink(target: self, selector: #selector(fire))
-        l.preferredFrameRateRange = CAFrameRateRange(minimum: 60, maximum: 120, preferred: 120)
-        l.add(to: .main, forMode: .common)
-        link = l
-    }
-
-    @objc private func fire() { tick() }
-
-    func invalidate() {
-        link?.invalidate()
-        link = nil
-    }
-}

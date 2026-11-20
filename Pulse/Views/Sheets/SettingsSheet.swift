@@ -46,13 +46,23 @@ struct SettingsSheet: View {
                 }
 
                 Section {
-                    Toggle("Haptic tick on each beat", isOn: $m.prefs.haptics)
+                    if Haptics.hasTapticEngine {
+                        Toggle("Haptic tick on each beat", isOn: $m.prefs.haptics)
+                    }
+                    #if os(iOS)
                     Toggle("Keep screen awake while playing", isOn: $m.prefs.keepAwake)
                     Toggle("Play along with other audio", isOn: $m.prefs.mixWithOthers)
+                    #else
+                    Toggle("Keep display awake while playing", isOn: $m.prefs.keepAwake)
+                    #endif
                 } header: {
                     Text("Playback")
                 } footer: {
+                    #if os(iOS)
                     Text("Turn off \"Play along\" if you'd rather the metronome pause music and podcasts. Pulse keeps playing with the screen locked.")
+                    #else
+                    Text("Pulse keeps time while its window is in the background, and the media keys start and stop it.")
+                    #endif
                 }
 
                 Section {
@@ -74,7 +84,13 @@ struct SettingsSheet: View {
                 }
 
                 Section {
+                    #if os(iOS)
                     ShortcutsLink()
+                    #else
+                    Button { NSWorkspace.shared.open(URL(string: "shortcuts://")!) } label: {
+                        Label("Open Shortcuts", systemImage: "square.2.layers.3d")
+                    }
+                    #endif
                     ForEach(Self.examples, id: \.self) { phrase in
                         Label(phrase, systemImage: "mic.fill").font(.callout)
                     }

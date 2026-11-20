@@ -18,6 +18,11 @@ struct PulseApp: App {
                 .preferredColorScheme(metronome.prefs.theme.isDark ? .dark : .light)
                 .tint(metronome.prefs.theme.strongColor)
         }
+        .commands { PulseCommands(m: metronome) }
+        #if os(macOS)
+        .defaultSize(width: 1000, height: 680)
+        .windowResizability(.contentMinSize)
+        #endif
     }
 }
 

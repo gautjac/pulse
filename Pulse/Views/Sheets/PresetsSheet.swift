@@ -24,7 +24,7 @@ struct PresetsSheet: View {
                 }
             }
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .leadingBar) {
                     Button { newName = ""; showSave = true } label: { Label("Save current", systemImage: "plus") }
                 }
             }

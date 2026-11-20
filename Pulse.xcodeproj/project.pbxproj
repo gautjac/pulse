@@ -11,8 +11,10 @@
 		03F0EE265763A58C579A699D /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4572D478BB44FB21724C82DB /* Preferences.swift */; };
 		062845D4DEF4A36534AB6A91 /* Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D77E91FD9AD255F7F9241A5 /* Options.swift */; };
 		0BE2831AF08073CE70E53CE5 /* MeterSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D22A08762939C7515EAC3AE4 /* MeterSheet.swift */; };
+		1E0AB8B57821552E6BD496AF /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = D811D6A1574F69039178491D /* Platform.swift */; };
 		227D008E1893E4FBA689B6B4 /* PresetsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0267FD6F8B8F2241D22F5BA /* PresetsSheet.swift */; };
 		3486367464537B6192F7C2AF /* PulseApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE9CD05DD0A6FAA15E6014 /* PulseApp.swift */; };
+		400CBD22E1EDC2E0953580B3 /* PulseCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCD71733F4970AE4258E8DA8 /* PulseCommands.swift */; };
 		43D6F2831F1A8242686ECB13 /* SoundsSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30C6AA27117AC331EEABE766 /* SoundsSheet.swift */; };
 		4E1B22FBB42B10E99E3FAB17 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7FC45EDF2B4FFFC9EE14EFE /* ContentView.swift */; };
 		54B1BA6CD396C1361BCCECF4 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = B546F153B85E30BD45F621EF /* Components.swift */; };
@@ -63,9 +65,11 @@
 		C31B4BA35AC9F9CD034598EE /* AudioOutput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioOutput.swift; sourceTree = "<group>"; };
 		D1EB8C9DF7000FA8A384289B /* TempoPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempoPanel.swift; sourceTree = "<group>"; };
 		D22A08762939C7515EAC3AE4 /* MeterSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeterSheet.swift; sourceTree = "<group>"; };
+		D811D6A1574F69039178491D /* Platform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Platform.swift; sourceTree = "<group>"; };
 		E0267FD6F8B8F2241D22F5BA /* PresetsSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetsSheet.swift; sourceTree = "<group>"; };
 		E7FC45EDF2B4FFFC9EE14EFE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		F91CCAF35EA2DD28C183B79B /* VisualStage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualStage.swift; sourceTree = "<group>"; };
+		FCD71733F4970AE4258E8DA8 /* PulseCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulseCommands.swift; sourceTree = "<group>"; };
 		FE7CA40399C2BCC1C26D4D16 /* SystemIntegration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemIntegration.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -106,6 +110,7 @@
 			children = (
 				C31B4BA35AC9F9CD034598EE /* AudioOutput.swift */,
 				2D72A6F7F91E55F8532068A7 /* Metronome.swift */,
+				D811D6A1574F69039178491D /* Platform.swift */,
 				4572D478BB44FB21724C82DB /* Preferences.swift */,
 				FE7CA40399C2BCC1C26D4D16 /* SystemIntegration.swift */,
 			);
@@ -125,6 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				0AEE9CD05DD0A6FAA15E6014 /* PulseApp.swift */,
+				FCD71733F4970AE4258E8DA8 /* PulseCommands.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -325,10 +331,12 @@
 				0BE2831AF08073CE70E53CE5 /* MeterSheet.swift in Sources */,
 				623D2F4C22014A591EE4051C /* Metronome.swift in Sources */,
 				062845D4DEF4A36534AB6A91 /* Options.swift in Sources */,
+				1E0AB8B57821552E6BD496AF /* Platform.swift in Sources */,
 				58EFD0F2D14975A22F4A1A34 /* PracticeSheet.swift in Sources */,
 				03F0EE265763A58C579A699D /* Preferences.swift in Sources */,
 				227D008E1893E4FBA689B6B4 /* PresetsSheet.swift in Sources */,
 				3486367464537B6192F7C2AF /* PulseApp.swift in Sources */,
+				400CBD22E1EDC2E0953580B3 /* PulseCommands.swift in Sources */,
 				CBBB701E17436D5FA6F87AA4 /* SettingsSheet.swift in Sources */,
 				43D6F2831F1A8242686ECB13 /* SoundsSheet.swift in Sources */,
 				763F5730FD1C63725BC496C1 /* SubdivisionSheet.swift in Sources */,
@@ -360,9 +368,15 @@
 					"@loader_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.jacquesgautreau.pulse.tests;
-				SDKROOT = iphoneos;
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Pulse.app/Pulse";
+				"TEST_HOST[sdk=iphone*]" = "$(BUILT_PRODUCTS_DIR)/Pulse.app/Pulse";
+				"TEST_HOST[sdk=macosx*]" = "$(BUILT_PRODUCTS_DIR)/Pulse.app/Contents/MacOS/Pulse";
 			};
 			name = Release;
 		};
@@ -415,11 +429,12 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
+				SDKROOT = auto;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
@@ -432,15 +447,21 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Pulse/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jacquesgautreau.pulse;
-				SDKROOT = iphoneos;
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -451,15 +472,21 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Pulse/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jacquesgautreau.pulse;
-				SDKROOT = iphoneos;
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -475,9 +502,15 @@
 					"@loader_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.jacquesgautreau.pulse.tests;
-				SDKROOT = iphoneos;
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Pulse.app/Pulse";
+				"TEST_HOST[sdk=iphone*]" = "$(BUILT_PRODUCTS_DIR)/Pulse.app/Pulse";
+				"TEST_HOST[sdk=macosx*]" = "$(BUILT_PRODUCTS_DIR)/Pulse.app/Contents/MacOS/Pulse";
 			};
 			name = Debug;
 		};
@@ -536,12 +569,13 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
+				SDKROOT = auto;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
