@@ -1,4 +1,4 @@
-name: Pouls
+name: Pulse
 options:
   bundleIdPrefix: com.jacquesgautreau
   createIntermediateGroups: true
@@ -13,30 +13,30 @@ settings:
     CODE_SIGN_STYLE: Automatic
     DEVELOPMENT_TEAM: "9WZ66DZ69J"
 packages:
-  PoulsKit:
-    path: PoulsKit
+  PulseKit:
+    path: PulseKit
 targets:
-  Pouls:
+  Pulse:
     type: application
     platform: iOS
     sources:
-      - path: Pouls
+      - path: Pulse
         excludes: ["Info.plist"]
     dependencies:
-      - package: PoulsKit
+      - package: PulseKit
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.jacquesgautreau.pouls
+        PRODUCT_BUNDLE_IDENTIFIER: com.jacquesgautreau.pulse
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
         TARGETED_DEVICE_FAMILY: "1,2"
         GENERATE_INFOPLIST_FILE: NO
-        INFOPLIST_FILE: Pouls/Info.plist
+        INFOPLIST_FILE: Pulse/Info.plist
         ENABLE_USER_SCRIPT_SANDBOXING: NO
     info:
-      path: Pouls/Info.plist
+      path: Pulse/Info.plist
       properties:
-        CFBundleDisplayName: Pouls
+        CFBundleDisplayName: Pulse
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         UIBackgroundModes: [audio]
@@ -46,23 +46,23 @@ targets:
         UIApplicationSceneManifest:
           UIApplicationSupportsMultipleScenes: false
         ITSAppUsesNonExemptEncryption: false
-        NSUserActivityTypes: [com.jacquesgautreau.pouls.start]
-  PoulsTests:
+        NSUserActivityTypes: [com.jacquesgautreau.pulse.start]
+  PulseTests:
     type: bundle.unit-test
     platform: iOS
     sources:
-      - path: PoulsTests
+      - path: PulseTests
     dependencies:
-      - target: Pouls
-      - package: PoulsKit
+      - target: Pulse
+      - package: PulseKit
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.jacquesgautreau.pouls.tests
+        PRODUCT_BUNDLE_IDENTIFIER: com.jacquesgautreau.pulse.tests
         GENERATE_INFOPLIST_FILE: YES
 schemes:
-  Pouls:
+  Pulse:
     build:
       targets:
-        Pouls: all
+        Pulse: all
     test:
-      targets: [PoulsTests]
+      targets: [PulseTests]

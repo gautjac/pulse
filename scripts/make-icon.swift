@@ -1,5 +1,5 @@
-// Draws the Pouls icon with Core Graphics: a metronome with its pendulum caught mid-swing.
-// Run: swift scripts/make-icon.swift Pouls/Resources/Assets.xcassets/AppIcon.appiconset/icon.png
+// Draws the Pulse icon with Core Graphics: a metronome with its pendulum caught mid-swing.
+// Run: swift scripts/make-icon.swift Pulse/Resources/Assets.xcassets/AppIcon.appiconset/icon.png
 import Foundation
 import CoreGraphics
 import ImageIO

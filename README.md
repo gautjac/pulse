@@ -1,4 +1,4 @@
-# Pouls
+# Pulse
 
 A feature-rich metronome for iPhone and iPad, built for musicians who play in more than 4/4.
 
@@ -32,15 +32,15 @@ Every control is an App Intent, so it works from Siri, Shortcuts, Spotlight, the
 
 | Say / run | Intent |
 |---|---|
-| "Start Pouls" / "Stop Pouls" | `StartMetronomeIntent` (optional tempo), `StopMetronomeIntent`, `ToggleMetronomeIntent` |
-| "Speed up Pouls" / "Slow down Pouls" | `SpeedUpIntent`, `SlowDownIntent` (amount in BPM, default 5) |
-| "Set the tempo in Pouls" | `SetTempoIntent` (Siri asks for the number) |
+| "Start Pulse" / "Stop Pulse" | `StartMetronomeIntent` (optional tempo), `StopMetronomeIntent`, `ToggleMetronomeIntent` |
+| "Speed up Pulse" / "Slow down Pulse" | `SpeedUpIntent`, `SlowDownIntent` (amount in BPM, default 5) |
+| "Set the tempo in Pulse" | `SetTempoIntent` (Siri asks for the number) |
 | Faster or slower by N BPM or N percent | `ChangeTempoIntent` |
-| "Double the tempo in Pouls", "Half time in Pouls" | `ScaleTempoIntent` |
-| "Set Pouls to seven eight" | `SetTimeSignatureIntent`, plus `SetCustomTimeSignatureIntent` (beats, note value, grouping) |
-| "Subdivide Pouls into triplets" | `SetSubdivisionIntent` |
-| "Change the sound in Pouls to wood block" | `SetSoundIntent` |
-| "Start Waltz in Pouls" | `StartPresetIntent`, `LoadPresetIntent` (built-in and your presets) |
+| "Double the tempo in Pulse", "Half time in Pulse" | `ScaleTempoIntent` |
+| "Set Pulse to seven eight" | `SetTimeSignatureIntent`, plus `SetCustomTimeSignatureIntent` (beats, note value, grouping) |
+| "Subdivide Pulse into triplets" | `SetSubdivisionIntent` |
+| "Change the sound in Pulse to wood block" | `SetSoundIntent` |
+| "Start Waltz in Pulse" | `StartPresetIntent`, `LoadPresetIntent` (built-in and your presets) |
 | Build from 80 to 140 BPM, +4 every 4 bars | `StartSpeedTrainerIntent`, `StopSpeedTrainerIntent` |
 | Count-in, polyrhythm, volume, visual | `SetCountInIntent`, `SetPolyrhythmIntent`, `SetVolumeIntent`, `SetVisualModeIntent` |
 | "What's my tempo?" | `GetTempoIntent` (speaks the settings and returns the BPM) |
@@ -50,7 +50,7 @@ Tempo, subdivision, sound and meter changes made while playing take effect on th
 ## Layout
 
 ```
-PoulsKit/             Swift package: engine, synth, models. No UIKit; unit-tested on the Mac with `swift test`.
+PulseKit/             Swift package: engine, synth, models. No UIKit; unit-tested on the Mac with `swift test`.
   Types.swift         AccentLevel, BeatUnit, Meter (grouping/accents), BarSpec, Subdivision
   Settings.swift      MetronomeSettings, PolyLayer, SpeedTrainer, GapClick
   Sounds.swift        SoundID, SoundKit, synthesis recipes, peak-normalised SoundBank
@@ -59,11 +59,11 @@ PoulsKit/             Swift package: engine, synth, models. No UIKit; unit-teste
   Phase.swift         PlaybackPhase: what is audible right now, for the visuals
   Tempo.swift         tempo names, tap tempo
   Presets.swift       30 built-in presets
-Pouls/                iOS app
+Pulse/                iOS app
   Model/              Metronome (observable model), AudioOutput (AVAudioEngine), preferences/themes
   Intents/            App Intents, enums, preset entity, Siri phrases
   Views/              main screen, tempo ruler, beat grid, visuals, sheets
-PoulsTests/           model + intent tests
+PulseTests/           model + intent tests
 scripts/make-icon.swift
 project.yml           xcodegen spec (run `xcodegen generate`)
 ```
@@ -77,14 +77,14 @@ The UI doesn't run its own clock. The engine publishes the last 32 pulses with t
 ## Build and test
 
 ```bash
-cd PoulsKit && swift test            # 67 engine tests, incl. 10 minutes with no drift
+cd PulseKit && swift test            # 67 engine tests, incl. 10 minutes with no drift
 xcodegen generate
-xcodebuild -project Pouls.xcodeproj -scheme Pouls \
+xcodebuild -project Pulse.xcodeproj -scheme Pulse \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro' test   # 28 app + intent tests
 ```
 
 For screenshots and manual checks, Debug builds accept launch arguments:
-`-pouls.demo.preset builtin.seven-eight -pouls.demo.visual orbit -pouls.demo.theme ocean -pouls.demo.bpm 140 -pouls.demo.play YES`
+`-pulse.demo.preset builtin.seven-eight -pulse.demo.visual orbit -pulse.demo.theme ocean -pulse.demo.bpm 140 -pulse.demo.play YES`
 
 ## Notes
 
